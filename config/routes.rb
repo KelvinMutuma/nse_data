@@ -1,4 +1,20 @@
 Rails.application.routes.draw do
+  resources :markets
+
+  resources :forexes
+
+  resources :banks
+
+  resources :changers
+
+  resources :movers
+
+  resources :share_indices
+
+  resources :stock_quotes
+
+  resources :securities
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

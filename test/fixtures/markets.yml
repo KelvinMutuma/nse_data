@@ -1,0 +1,22 @@
+# == Schema Information
+#
+# Table name: markets
+#
+#  id                    :integer          not null, primary key
+#  equity_turnover       :float
+#  market_capitalization :float
+#  created_at            :datetime
+#  updated_at            :datetime
+#  guid                  :string(255)
+#  published_at          :datetime
+#
+
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  equity_turnover: 1.5
+  market_capitalization: 1.5
+
+two:
+  equity_turnover: 1.5
+  market_capitalization: 1.5
