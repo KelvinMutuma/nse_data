@@ -4,26 +4,6 @@
 # is considered to be the first unless any hosts have the primary
 # property set.  Don't declare `role :all`, it's a meta role.
 
-
-set :stage, :production
-set :branch, "master"
-
-
-#used in case we're deplyong multiple versions of the same 
-#app side by side. Also provides quick sanity checks when looking
-#at filepaths
-
-set :full_app_name, "#{fetch(:application)}_#{fetch(:stage)}"
-set :server_name, "abacuskenya.cloudapp.net"
-
-#dont try and infer something as imporatnt as environment
-#from stage name
-set :rails_env, :production
-
-#whether we're using ssl or not, used for building nginx
-#config file
-set :enable_ssl, false
-
 role :app, %w{deploy@example.com}
 role :web, %w{deploy@example.com}
 role :db,  %w{deploy@example.com}
@@ -35,7 +15,7 @@ role :db,  %w{deploy@example.com}
 # server list. The second argument is a, or duck-types, Hash and is
 # used to set extended properties on the server.
 
-server 'abacuskenya.cloudapp.net', user: 'deploy', roles: %w{web app db}, primary: :true
+server 'example.com', user: 'deploy', roles: %w{web app}, my_property: :my_value
 
 
 # Custom SSH Options
@@ -46,20 +26,20 @@ server 'abacuskenya.cloudapp.net', user: 'deploy', roles: %w{web app db}, primar
 # Global options
 # --------------
 #  set :ssh_options, {
-#    keys: %w(/home/#{ENV['USERPROFILE']}/.ssh/id_rsa),
+#    keys: %w(/home/rlisowski/.ssh/id_rsa),
 #    forward_agent: false,
 #    auth_methods: %w(password)
 #  }
 #
 # And/or per server (overrides global)
 # ------------------------------------
-# server 'abacuskenya.cloudapp.net',
-#   user: 'abacuskenya',
+# server 'example.com',
+#   user: 'user_name',
 #   roles: %w{web app},
 #   ssh_options: {
-#     user: 'deploy', # overrides user setting above
-#     keys: %w(/home/deploy/.ssh/id_rsa),
+#     user: 'user_name', # overrides user setting above
+#     keys: %w(/home/user_name/.ssh/id_rsa),
 #     forward_agent: false,
-#     auth_methods: %w(publickey)
+#     auth_methods: %w(publickey password)
 #     # password: 'please use keys'
 #   }
