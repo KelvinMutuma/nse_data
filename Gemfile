@@ -39,6 +39,14 @@ gem 'spring',        group: :development
 
 # Use debugger
 # gem 'debugger', group: [:development, :test]
+gem 'rake'
+gem 'capistrano', '~> 3.0', require: false, group: :development
+gem 'capistrano-rvm'
+ 
+group :development do
+  gem 'capistrano-rails',   '~> 1.1', require: false
+  gem 'capistrano-bundler', '~> 1.1', require: false
+end
 
 gem 'daemons'
 gem 'jquery-ui-rails'

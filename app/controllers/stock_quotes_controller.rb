@@ -13,6 +13,12 @@ class StockQuotesController < ApplicationController
   end
 
   # GET /stock_quotes/new
+
+  def update_from_feed
+    StockQuote.update_from_feed(params[:feed])
+    redirect_to root_url, notice: "Imported"
+  end
+
   def new
     @stock_quote = StockQuote.new
   end

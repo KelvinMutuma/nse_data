@@ -11,7 +11,9 @@ Rails.application.routes.draw do
 
   resources :share_indices
 
-  resources :stock_quotes
+  resources :stock_quotesdo
+    collection  { post :update_from_feed}
+  end
 
   resources :securities
 
@@ -19,7 +21,7 @@ Rails.application.routes.draw do
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-  # root 'welcome#index'
+  root 'welcome#index'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
