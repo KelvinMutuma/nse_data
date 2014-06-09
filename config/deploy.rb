@@ -1,49 +1,63 @@
-# config valid only for Capistrano 3.1
 lock '3.2.1'
 
-set :application, 'my_app_name'
-set :repo_url, 'git@example.com:me/my_repo.git'
+set :application, 'nse_data'
+set :repo_url, 'git@github.com:KelvinMutuma/nse_data.git'
+
+set :deploy_user, 'deploy'
+set :use_sudo, false
+
+set :ssh_options, {:forward_agent => true, :keys => %w(/home/kelvin/.ssh/id_rsa)}
 
 # Default branch is :master
 # ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }.call
 
 # Default deploy_to directory is /var/www/my_app
-# set :deploy_to, '/var/www/my_app'
+set :deploy_to, '/var/www/nse_data'
 
-# Default value for :scm is :git
-# set :scm, :git
 
-# Default value for :format is :pretty
-# set :format, :pretty
+ set :scm, :git
+ set :scm_passphrase, ""
 
-# Default value for :log_level is :debug
-# set :log_level, :debug
+ set :format, :pretty
+ set :log_level, :debug
 
-# Default value for :pty is false
-# set :pty, true
+set :linked_files, %w{config/database.yml}
 
-# Default value for :linked_files is []
-# set :linked_files, %w{config/database.yml}
+set :linked_dirs, %w{bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}
 
-# Default value for linked_dirs is []
-# set :linked_dirs, %w{bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}
+ set :keep_releases, 5
 
-# Default value for default_env is {}
-# set :default_env, { path: "/opt/ruby/bin:$PATH" }
+set :tests, []
+set(:config_files, %w(
+  nginx.config
+  database.example.yml
+  ))
 
-# Default value for keep_releases is 5
-# set :keep_releases, 5
+set(:symlinks, [
+  {
+    source: "nginx.conf",
+    link: "etc/nginx/sites-enabled/#{fetch(:full_app_name)}"
+  }
+  ])
+
 
 namespace :deploy do
+  before :deploy, "deploy:check_revision"
+  before :deploy, "deploy:run_tests"
+  before 'deploy:setup_config', 'nginx:remove_default_vhost' 
 
   desc 'Restart application'
   task :restart do
     on roles(:app), in: :sequence, wait: 5 do
       # Your restart mechanism here, for example:
-      # execute :touch, release_path.join('tmp/restart.txt')
+       execute :touch, release_path.join('tmp/restart.txt')
     end
   end
 
+  after 'deploy:smylink:shared', 'deploy:compile_assets_locally'
+  after :finishing, 'deploy:cleanup'
+
+  after 'deploy:setup_config', 'nginx:reload'
   after :publishing, :restart
 
   after :restart, :clear_cache do
