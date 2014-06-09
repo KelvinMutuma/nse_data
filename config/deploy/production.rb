@@ -5,8 +5,9 @@
 # property set.  Don't declare `role :all`, it's a meta role.
 set :stage, :production
 set :branch, "master"
+set :deploy_user, "abacususer"
 set :full_app_name, "#{fetch(:application)}_#{fetch(:stage)}"
-set :server_name, "SERVERURL"
+set :server_name, "abacuskenya.cloudapp.net"
 set :rails_env, :production
 
 
@@ -22,8 +23,10 @@ role :db,  %w{deploy@example.com}
 # server list. The second argument is a, or duck-types, Hash and is
 # used to set extended properties on the server.
 
-server 'abacuskenya.cloudapp.net', user: 'deploy', roles: %w{web app db}, primary: :true
+server 'abacuskenya.cloudapp.net', user: 'abacususer', roles: %w{web app db}, primary: :true
 
+# the path to deploy to
+set :deploy_to, "/home/#{fetch(:deploy_user)}/apps/#{fetch(:full_app_name)}"
 # Custom SSH Options
 # ==================
 # You may pass any option but keep in mind that net/ssh understands a
